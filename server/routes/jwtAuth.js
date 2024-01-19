@@ -4,7 +4,7 @@ const pool = require('../db')
 const router = express.Router()
 const jwtGenerator = require('../utils/jwtGenerator')
 
-router.post('/register', async (req, res) => {
+router.post('/register', validInfo, async (req, res) => {
     try{
         const {name, email, password} = req.body
 
@@ -32,7 +32,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.post('/login', async(req,res) => {
+router.post('/login', validInfo, async(req,res) => {
     try{
         const {email, password} = req.body
 
