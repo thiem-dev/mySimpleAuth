@@ -1,4 +1,5 @@
 const pool = require('../db.js');
+const { hashPassword, comparePassword } = require('../helpers/auth.js');
 
 const test = (req, res) => {
   res.json('test working');
@@ -40,10 +41,11 @@ const registerUser = async (req, res) => {
     }
 
     //create new user
+    const hashedPw = await hashPassword(password);
     const newUser = await pool.query(
       `INSERT INTO users(user_name, user_email, user_password) 
     VALUES($1, $2, $3) RETURNING *`,
-      [name, email, password]
+      [name, email, hashedPw]
     );
 
     return res.json(newUser.rows[0]);
