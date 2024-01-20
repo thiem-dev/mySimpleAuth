@@ -1,5 +1,7 @@
 const pool = require('../db.js');
-const { hashPassword, comparePassword } = require('../helpers/auth.js');
+const { hashPassword, comparePassword } = require('../utils/auth.js');
+const jwtGenerator = require('../utils/jwtGenerator.js');
+const jwt = require('jsonwebtoken');
 
 // dev test endpoint
 const test = (req, res) => {
@@ -73,7 +75,21 @@ const loginUser = async (req, res) => {
     //compare passwords
     const match = await comparePassword(password, user.rows[0].user_password);
     if (match) {
-      res.json('passwords match');
+      const payload = {
+        user: {
+          id: user.rows[0].user_id,
+        },
+      };
+
+      const token = jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        {},
+        (err, token) => {
+          if (err) throw err;
+          res.cookie('token', token).json(user);
+        }
+      );
     }
     if (!match) {
       res.json({

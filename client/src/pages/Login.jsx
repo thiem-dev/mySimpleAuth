@@ -1,3 +1,4 @@
+//login.jsx
 import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
@@ -22,13 +23,13 @@ const Login = () => {
         toast.error(data.error);
       } else {
         setData({});
-        toast.success('Login');
+        toast.success('Login Success!');
         navigate('/user');
       }
     } catch (error) {
       if (error.request) {
         toast.error(
-          'request sent, no response received from server. Check console'
+          'request sent, no response received from server. Check console and server logs'
         );
       } else {
         toast.error(data.error);
