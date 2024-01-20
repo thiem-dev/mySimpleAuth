@@ -1,6 +1,6 @@
+//authController.js
 const pool = require('../db.js');
 const { hashPassword, comparePassword } = require('../utils/auth.js');
-const jwtGenerator = require('../utils/jwtGenerator.js');
 const jwt = require('jsonwebtoken');
 
 // dev test endpoint
@@ -78,18 +78,21 @@ const loginUser = async (req, res) => {
       const payload = {
         user: {
           id: user.rows[0].user_id,
+          name: user.rows[0].user_name,
+          email: user.rows[0].user_email,
         },
       };
 
-      const token = jwt.sign(
+      const signedToken = jwt.sign(
         payload,
         process.env.JWT_SECRET,
         {},
         (err, token) => {
           if (err) throw err;
-          res.cookie('token', token).json(user);
+          res.cookie('mylocaljwt', token).json(user);
         }
       );
+      res.json({ signedToken });
     }
     if (!match) {
       res.json({
@@ -101,8 +104,22 @@ const loginUser = async (req, res) => {
   }
 };
 
+//get user profile endpoint for if user is logged in and has token
+const getProfile = (req, res) => {
+  const { mylocaljwt } = req.cookies;
+  if (mylocaljwt) {
+    jwt.verify(mylocaljwt, process.env.JWT_SECRET, {}, (err, user) => {
+      if (err) throw err;
+      res.json(user);
+    });
+  } else {
+    res.json(null);
+  }
+};
+
 module.exports = {
   test,
   registerUser,
   loginUser,
+  getProfile,
 };

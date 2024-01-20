@@ -1,11 +1,13 @@
 //login.jsx
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../context/userContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setUserData } = useContext(UserContext);
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -23,8 +25,11 @@ const Login = () => {
         toast.error(data.error);
       } else {
         setData({});
+        axios.get('/profile').then(({ data }) => {
+          setUserData(data);
+        });
         toast.success('Login Success!');
-        navigate('/user');
+        navigate('/dashboard');
       }
     } catch (error) {
       if (error.request) {
