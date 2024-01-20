@@ -14,6 +14,13 @@ const registerUser = async (req, res) => {
       });
     }
 
+    //email check
+    if (!email) {
+      return res.json({
+        error: 'email is required',
+      });
+    }
+
     //password check
     if (!password || password.length < 6) {
       return res.json({

@@ -19,6 +19,7 @@ const Login = () => {
         <input
           type="email"
           placeholder="Enter email"
+          autoComplete="email"
           value={data.email}
           onChange={(e) => {
             setData({ ...data, email: e.target.value });
@@ -28,6 +29,7 @@ const Login = () => {
         <input
           type="password"
           placeholder="Enter password"
+          autoComplete="current-password"
           value={data.password}
           onChange={(e) => {
             setData({ ...data, password: e.target.value });
