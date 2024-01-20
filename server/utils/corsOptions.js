@@ -12,7 +12,9 @@ const corsOptions = {
       callback(null, true);
     } else {
       // Block the request if the origin is not in the whitelist
-      const error = new Error('Not allowed by CORS');
+      const error = new Error(
+        'Not allowed by CORS. Origin was not on whitelist'
+      );
       error.status = 403; // Set the HTTP status code for forbidden
       callback(error);
     }

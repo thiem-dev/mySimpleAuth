@@ -15,17 +15,11 @@ router.get('/', test);
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 
-// Error handling middleware (comes after route definitions)
+// Error handling
 router.use((err, req, res, next) => {
-  if (err) {
-    if (err.status === 403) {
-      // CORS error
-      res.status(403).json({ error: 'CORS not allowed' });
-    } else {
-      // Other errors
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  }
+  res
+    .status(500)
+    .json({ error: 'Internal Server Error. Should not be getting here' });
 });
 
 module.exports = router;

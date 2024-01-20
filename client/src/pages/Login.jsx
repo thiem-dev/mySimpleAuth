@@ -26,7 +26,13 @@ const Login = () => {
         navigate('/user');
       }
     } catch (error) {
-      toast.error(data.error);
+      if (error.request) {
+        toast.error(
+          'request sent, no response received from server. Check console'
+        );
+      } else {
+        toast.error(data.error);
+      }
     }
   };
 
