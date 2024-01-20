@@ -32,6 +32,7 @@ const registerUser = async (req, res) => {
       });
     }
 
+    //create new user
     const newUser = await pool.query(
       `INSERT INTO users(user_name, user_email, user_password) 
     VALUES($1, $2, $3) RETURNING *`,
@@ -39,7 +40,9 @@ const registerUser = async (req, res) => {
     );
 
     return res.json(newUser.rows[0]);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = {
