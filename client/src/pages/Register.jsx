@@ -23,7 +23,7 @@ const Register = () => {
         toast.error(data.error);
       } else {
         setData({});
-        toast.success('Login Successful. Welcome!');
+        toast.success('Register Successful');
         navigate('/login');
       }
     } catch (error) {

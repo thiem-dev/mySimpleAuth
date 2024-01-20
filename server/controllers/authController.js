@@ -1,10 +1,12 @@
 const pool = require('../db.js');
 const { hashPassword, comparePassword } = require('../helpers/auth.js');
 
+// dev test endpoint
 const test = (req, res) => {
   res.json('test working');
 };
 
+// Register Endpoint
 const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -54,7 +56,37 @@ const registerUser = async (req, res) => {
   }
 };
 
+// Login Endpoint
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    //check if user exists
+    const user = await pool.query(
+      `SELECT * FROM users WHERE user_email = $1; `,
+      [email]
+    );
+    if (user.rows.length === 0) {
+      return res.json({ error: 'email does not exist' });
+    }
+
+    //compare passwords
+    const match = await comparePassword(password, user.rows[0].user_password);
+    if (match) {
+      res.json('passwords match');
+    }
+    if (!match) {
+      res.json({
+        error: 'passwords do not match',
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   test,
   registerUser,
+  loginUser,
 };
