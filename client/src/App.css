@@ -1,7 +1,20 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: 0.5s all ease;
+}
+
 body {
   display: flex;
   flex-flow: row wrap;
   align-items: center;
   justify-content: center;
-  margin: auto auto;
+  margin: 15rem auto;
+}
+
+form {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 1rem;
 }
