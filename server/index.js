@@ -6,10 +6,9 @@ const pool = require('./db');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// middleware
 app.use(express.json());
-
-app.use('/api/auth', require('./routes/jwtAuth'));
-app.use('/api/admin', require('./routes/admin'));
+app.use('/', require('./routes/authRoutes'));
 
 // app.get('/api/users', async (req, res) => {
 //     try{
